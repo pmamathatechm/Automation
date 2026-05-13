@@ -1,0 +1,30 @@
+import { test, expect } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('https://automationteststore.com/index.php?rt=account/login');
+  await page.getByRole('link', { name: 'Login or register' }).click();
+  await page.getByRole('button', { name: ' Continue' }).click();
+  await page.locator('#AccountFrm_firstname').click();
+  await page.locator('#AccountFrm_firstname').fill('Mamatha');
+  await page.locator('#AccountFrm_lastname').click();
+  await page.locator('#AccountFrm_lastname').fill('P');
+  await page.locator('#AccountFrm_email').click();
+  await page.locator('#AccountFrm_email').fill('p.mamatha160@gmail.com');
+  await page.locator('#AccountFrm_address_1').click();
+  await page.locator('#AccountFrm_address_1').fill('2-13');
+  await page.locator('#AccountFrm_country_id').selectOption('99');
+  await page.locator('#AccountFrm_city').click();
+  await page.locator('#AccountFrm_city').fill('Andhrapradesh');
+  await page.locator('#AccountFrm_zone_id').selectOption('1476');
+  await page.locator('#AccountFrm_postcode').click();
+  await page.locator('#AccountFrm_postcode').fill('515575');
+  await page.locator('#AccountFrm_loginname').click();
+  await page.locator('#AccountFrm_loginname').fill('Mamatha');
+  await page.locator('#AccountFrm_password').click();
+  await page.locator('#AccountFrm_password').fill('Sahasam@1234');
+  await page.locator('#AccountFrm_confirm').click();
+  await page.locator('#AccountFrm_confirm').fill('Sahasam@1234');
+  await page.getByText('No', { exact: true }).click();
+  await page.getByRole('checkbox', { name: 'I have read and agree to the' }).check();
+  await page.getByRole('button', { name: ' Continue' }).click();
+});
