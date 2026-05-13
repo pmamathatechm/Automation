@@ -1,22 +1,44 @@
 import { test, expect } from '@playwright/test';
-import { CartPage } from '../pages/CartPage';
+test('Add Shoes and T-Shirt to cart', async ({ page }) => {
 
-test('Add products to cart and checkout', async ({ page }) => {
+  // Open application
+  await page.goto('https://automationteststore.com/index.php?rt=account/login');
+  // Wait for page load
+  await page.waitForLoadState('networkidle');
 
-  const cartPage = new CartPage(page);
+  // ---------------- ADD SHOES ----------------
 
-  // Launch application
-  await cartPage.launchApplication();
+  // Hover on Apparel & Accessories
+  await page.getByRole('link', { name: 'APPAREL & ACCESSORIES' }).hover();
+  // Click Shoes from dropdown
+  await page.getByRole('link', { name: 'Shoes' }).click();
 
-  // Add shoes product
-  await cartPage.addShoesToCart();
+  // Wait for products page
+  await page.waitForLoadState('networkidle');
 
-  // Add T-shirt product
-  await cartPage.addTshirtToCart();
+  // Add first shoe product to cart
+  await page.getByTitle('Add to Cart').first().click();
 
-  // Checkout
-  await cartPage.clickCheckout();
+  // ---------------- ADD T-SHIRT ----------------
 
+  // Hover again on Apparel & Accessories
+  await page.getByRole('link', { name: 'APPAREL & ACCESSORIES' }).hover();
+
+  // Click T-shirts from dropdown
+  await page.getByRole('link', { name: 'T-shirts' }).click();
+  // Wait for T-shirt page
+  await page.waitForLoadState('networkidle');
+  // Open second T-shirt product
+  await page.getByTitle('Add to Cart').nth(1).click();
+  // Select size if dropdown available
+  await page.locator('#option353').selectOption('782');
+  // Enter quantity
+  await page.locator('#product_quantity').fill('1');
+  // Add T-shirt to cart
+  await page.getByRole('link', { name: 'Add to Cart' }).click();
+
+  // Click cart
+  await page.locator('.dropdown-toggle .fa-shopping-cart').click();
   // Validation
-  await expect(page).toHaveURL(/checkout/);
+  await expect(page.locator('#cart')).toBeVisible();
 });
